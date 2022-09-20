@@ -1,9 +1,14 @@
 package ${package.ServiceImpl};
 
+import cn.santeamo.common.PageHelperExt;
+import cn.santeamo.common.PageParam;
+import cn.santeamo.common.Result;
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import ${superServiceImplClassPackage};
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +26,23 @@ open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperNam
 }
 #else
 public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+    @Override
+    public Result<${entity}> getDetail(${entity} entity) {
+        if (entity.getId() == null) {
+            return Result.fail("ID不能为空");
+        }
+        ${entity} notice = baseMapper.selectById(entity.getId());
+        return Result.data(notice);
+    }
 
+    @Override
+    public PageInfo<${entity}> getPage(PageParam page, ${entity} entity) {
+        return PageHelperExt.startPage(page).doSelectPageInfo(() -> baseMapper.selectList(Wrappers.lambdaQuery(entity)));
+    }
+
+    @Override
+    public Result<?> submit(${entity} entity) {
+        return Result.status(saveOrUpdate(entity));
+    }
 }
 #end

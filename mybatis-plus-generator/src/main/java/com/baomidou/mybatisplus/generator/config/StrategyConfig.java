@@ -506,7 +506,13 @@ public class StrategyConfig {
         }
 
         public Builder addInclude(@NotNull String include) {
-            this.strategyConfig.include.addAll(Arrays.asList(include.split(",")));
+            Set<String> set = new HashSet<>();
+            String[] split = include.split(",");
+            for (String s : split) {
+                s = s.trim();
+                set.add(s);
+            }
+            this.strategyConfig.include.addAll(set);
             return this;
         }
 

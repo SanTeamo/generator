@@ -18,6 +18,7 @@ package com.baomidou.mybatisplus.generator.config.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.generator.config.ConstVal;
 import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.builder.ConfigBuilder;
@@ -62,6 +63,11 @@ public class TableInfo {
      * 表名称
      */
     private String name;
+
+    /**
+     * 表名称首字母缩写
+     */
+    private String nameAcronym;
 
     /**
      * 表注释
@@ -119,6 +125,11 @@ public class TableInfo {
     private String fieldNames;
 
     /**
+     * 表名称首字母缩写字段名称集
+     */
+    private String nameAcronymFieldNames;
+
+    /**
      * 实体
      */
     private final Entity entity;
@@ -135,6 +146,22 @@ public class TableInfo {
         this.globalConfig = configBuilder.getGlobalConfig();
         this.entity = configBuilder.getStrategyConfig().entity();
         this.name = name;
+        if (strategyConfig.mapper().isBaseColumnList() && StringUtils.isNotBlank(name)) {
+            String tempName = name;
+            // 大写数字下划线组成转为小写 , 允许混合模式转为小写
+            if (StringUtils.isCapitalMode(name) || StringUtils.isMixedMode(name)) {
+                tempName = name.toLowerCase();
+            }
+            StringBuilder result = new StringBuilder();
+            // 用下划线将原始字符串分割
+            String[] camels = tempName.split(ConstVal.UNDERLINE);
+            // 跳过原始字符串中开头、结尾的下换线或双重下划线
+            // 处理真正的驼峰片段
+            Arrays.stream(camels).filter(camel -> !StringUtils.isBlank(camel)).forEach(camel -> {
+                result.append(camel.substring(0, 1).toLowerCase());
+            });
+            this.nameAcronym = result.toString();
+        }
     }
 
     /**
@@ -204,6 +231,18 @@ public class TableInfo {
             this.fieldNames = this.fields.stream().map(TableField::getColumnName).collect(Collectors.joining(", "));
         }
         return this.fieldNames;
+    }
+
+    public String getNameAcronymFieldNames() {
+        if (StringUtils.isBlank(nameAcronym)) {
+            return getFieldNames();
+        } else {
+            if (StringUtils.isBlank(nameAcronymFieldNames)) {
+                this.nameAcronymFieldNames = this.fields.stream().map(field -> nameAcronym + '.' + field.getColumnName())
+                    .collect(Collectors.joining(", "));
+            }
+            return this.nameAcronymFieldNames;
+        }
     }
 
     /**
@@ -311,6 +350,10 @@ public class TableInfo {
 
     public String getName() {
         return name;
+    }
+
+    public String getNameAcronym() {
+        return nameAcronym;
     }
 
     public String getComment() {

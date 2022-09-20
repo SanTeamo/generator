@@ -35,6 +35,8 @@ public interface ConstVal {
     String MAPPER = "Mapper";
     String XML = "Xml";
     String CONTROLLER = "Controller";
+    String DTO = "Dto";
+    String VO = "Vo";
     String PARENT = "Parent";
 
     String JAVA_TMPDIR = "java.io.tmpdir";

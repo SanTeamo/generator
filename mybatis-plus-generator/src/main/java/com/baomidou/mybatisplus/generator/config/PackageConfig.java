@@ -75,6 +75,16 @@ public class PackageConfig {
     private String controller = "controller";
 
     /**
+     * Dto包名
+     */
+    private String dto = "dto";
+
+    /**
+     * Vo包名
+     */
+    private String vo = "vo";
+
+    /**
      * 路径配置信息
      */
     private Map<OutputFile, String> pathInfo;
@@ -126,6 +136,8 @@ public class PackageConfig {
             packageInfo.put(ConstVal.SERVICE_IMPL, this.joinPackage(this.getServiceImpl()));
             packageInfo.put(ConstVal.CONTROLLER, this.joinPackage(this.getController()));
             packageInfo.put(ConstVal.PARENT, this.getParent());
+            packageInfo.put(ConstVal.DTO, this.joinPackage(this.getDto()));
+            packageInfo.put(ConstVal.VO, this.joinPackage(this.getVo()));
         }
         return Collections.unmodifiableMap(this.packageInfo);
     }
@@ -167,6 +179,14 @@ public class PackageConfig {
 
     public String getController() {
         return controller;
+    }
+
+    public String getDto() {
+        return dto;
+    }
+
+    public String getVo() {
+        return vo;
     }
 
     public Map<OutputFile, String> getPathInfo() {

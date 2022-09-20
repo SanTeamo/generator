@@ -1,9 +1,15 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+}
+
 dependencies {
     implementation "${lib.'mybatis-plus'}"
     implementation "${lib.velocity}"
     implementation "${lib.freemarker}"
     implementation "${lib.beetl}"
     implementation "${lib.enjoy}"
+    implementation "${lib.lombok}"
+    implementation "${lib.'swagger-annotations'}"
 
     compileOnly "org.jetbrains:annotations:22.0.0"
     testImplementation "${lib.sqlserver}"
@@ -14,6 +20,5 @@ dependencies {
     testImplementation "${lib.mysql}"
     testImplementation "${lib.sqlite}"
     testImplementation "${lib.firebird}"
-    testImplementation "${lib.'swagger-annotations'}"
     testCompileOnly "org.jetbrains:annotations:22.0.0"
 }

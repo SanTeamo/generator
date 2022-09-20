@@ -75,6 +75,8 @@ public abstract class AbstractTemplateEngine {
                 filePath = filePath + File.separator + file.getPackageName();
                 filePath = filePath.replaceAll("\\.", StringPool.BACK_SLASH + File.separator);
             }
+            String className = entityName + file.getFileName().split("\\.")[0];
+            objectMap.put("customClassName", className);
             String fileName = filePath + File.separator + entityName + file.getFileName();
             outputFile(new File(fileName), objectMap, file.getTemplatePath(), file.isFileOverride());
         });

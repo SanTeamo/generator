@@ -1,5 +1,8 @@
 import java.text.SimpleDateFormat
 
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
 buildscript {
     repositories {
         maven { url "https://maven.aliyun.com/nexus/content/groups/public" }
